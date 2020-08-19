@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 
 // -------------------------------------------Routes-------------------------------------------
 const users = require("./routes/api/users");
@@ -24,7 +25,9 @@ mongoose.connect(mongoURI, {
 
 const connection = mongoose.connection;
 connection.once("open", () =>
-  console.log("MongoDB database connection established successfully")
+  console.log(
+    "||-----------------------MongoDB database connection established successfully-----------------------||"
+  )
 );
 
 app.get("/", (req, res) => {

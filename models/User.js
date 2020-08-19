@@ -1,4 +1,5 @@
-const Schema = require("mongoose").Schema;
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
 //User's Schema
 
@@ -17,7 +18,6 @@ const userSchema = new Schema({
   },
   avatar: {
     type: String,
-    required: true,
   },
   date: {
     type: Date,
