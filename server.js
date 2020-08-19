@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const passport = require("passport");
 
 // -------------------------------------------Routes-------------------------------------------
 const users = require("./routes/api/users");
@@ -30,9 +31,11 @@ connection.once("open", () =>
   )
 );
 
-app.get("/", (req, res) => {
-  res.send("Hello, We're about to get started!");
-});
+//Passport middleware
+app.use(passport.initialize());
+
+//Passport Config
+require("./config/passport.js")(passport);
 
 // -------------------------------------------Using Routes-------------------------------------------
 app.use("/api/users", users);
