@@ -1,2 +1,3 @@
 /node_modules
-/config
+/config/passport.js
+/config/keys.js
