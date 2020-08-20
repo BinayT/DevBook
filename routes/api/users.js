@@ -7,6 +7,7 @@ const keys = require("../../config/keys");
 
 //Load Input Validation
 const validateRegisterInput = require("../../validation/register");
+const validateLoginInput = require("../../validation/login");
 
 //Load User Model
 const User = require("../../models/User");
@@ -40,7 +41,8 @@ router.post("/register", (req, res) => {
 
   User.findOne({ email }).then((user) => {
     if (user) {
-      return res.status(400).json({ error: "Email is already in use" });
+      errors.email = "Email is already in use";
+      return res.status(400).json(errors);
     } else {
       const avatar = gravatar.url(email, {
         s: "200", //Size
@@ -74,15 +76,20 @@ router.post("/register", (req, res) => {
 // @desc Login User / Returning JWT Token
 // @access Public
 router.post("/login", (req, res) => {
+  const { errors, isValid } = validateLoginInput(req.body);
+
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
   const { email, password } = req.body;
 
   //Find the user by Email
   User.findOne({ email }).then((user) => {
     //Check for user existence
     if (!user) {
-      return res
-        .status(400)
-        .json({ email: "Email hasn't been registered yet." });
+      errors.email = "Email hasn't been registered yet.";
+      return res.status(400).json(errors);
     }
 
     //Check password
@@ -101,7 +108,8 @@ router.post("/login", (req, res) => {
           }
         );
       } else {
-        res.status(400).json({ password: "Incorrect password" });
+        errors.password = "Incorrect password";
+        res.status(400).json(errors);
       }
     });
   });
